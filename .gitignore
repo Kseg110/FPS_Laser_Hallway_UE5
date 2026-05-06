@@ -73,3 +73,7 @@ Plugins/**/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Manual Ignores
+/Content/Fab
+/Content/JVAD3D_ProGlass_A
