@@ -9,7 +9,7 @@ void ALaserHallwayGameMode::StartPlay()
 
 	check(GEngine != nullptr);
 
-	//debug message for 5 seconds
-	//Test if game mode has started correctly
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("LaserHallway game mode started!"));
+	// Game running debug message
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("Game Mode running!"));
+
 }

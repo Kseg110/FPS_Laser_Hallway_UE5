@@ -13,7 +13,7 @@ UCLASS()
 class LASERHALLWAY_API ALaserHallwayGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-	
-	virtual void StartPlay() override;
 
+	virtual void StartPlay() override;
+	
 };
