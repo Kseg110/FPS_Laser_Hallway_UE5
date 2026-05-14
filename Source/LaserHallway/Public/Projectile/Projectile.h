@@ -43,4 +43,7 @@ public:
 	UFUNCTION()
 	void FireInDirection(const FVector& ShootDirection);
 
+	UFUNCTION()
+	void HitResult(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+
 };

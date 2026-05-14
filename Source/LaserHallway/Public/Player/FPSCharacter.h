@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "Projectile/Projectile.h"
 #include "FPSCharacter.generated.h"
 
 class UInputMappingContext;
@@ -60,5 +61,11 @@ public:
 
 	UFUNCTION()
 	void Fire();
+
+	UPROPERTY(EditAnywhere)
+	FVector MuzzleOffset;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AProjectile> ProjectileClass;
 
 };
