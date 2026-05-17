@@ -114,12 +114,12 @@ void AFPSCharacter::Fire()
 	FRotator CameraRotation;
 	GetActorEyesViewPoint(CameraLocation, CameraRotation);
 
-	MuzzleOffset.Set(100.0f, 0.0f, 0.0f);
+	MuzzleOffset.Set(100.0f, 0.0f, -10.0f);
 
 	FVector MuzzleLocation = CameraLocation + FTransform(CameraRotation).TransformVector(MuzzleOffset);
 
 	FRotator MuzzleRotation = CameraRotation;
-	MuzzleRotation.Pitch += 10.0f;
+	MuzzleRotation.Pitch += 0.0f;
 
 	// spawn projectile
 	UWorld* World = GetWorld();
@@ -136,7 +136,7 @@ void AFPSCharacter::Fire()
 	FVector LaunchDirection = MuzzleRotation.Vector();
 	Projectile->FireInDirection(LaunchDirection);
 
-	OnDmgPlayer(10.0f); // for testing only
+	//OnDmgPlayer(10.0f); // for testing only
 }
 
 void AFPSCharacter::OnDmgPlayer(float DamageAmount)
