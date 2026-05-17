@@ -70,6 +70,13 @@ public:
 	UFUNCTION()
 	void Fire();
 
+	UFUNCTION()
+	void OnDmgPlayer(float DamageAmount);
+
+private:
+	float Health = 100.0f;
+	float MaxHealth = 100.0f;
+
 	UPROPERTY(EditAnywhere)
 	FVector MuzzleOffset;
 

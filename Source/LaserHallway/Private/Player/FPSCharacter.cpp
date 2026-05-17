@@ -1,9 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "HUD/LaserHUD.h"
+#include "Kismet/GameplayStatics.h"
 #include "Player/FPSCharacter.h"
+#include "GameFramework/PlayerController.h"
 
 // Sets default values
 AFPSCharacter::AFPSCharacter()
@@ -48,8 +51,12 @@ void AFPSCharacter::BeginPlay()
 				Subsystem->AddMappingContext(PlayerMappingContext, 0);
 			}
 		}
+		if (ALaserHUD* LaserHUD = Cast<ALaserHUD>(PlayerController->GetHUD()))
+		{
+			LaserHUD->UpdateHealthBar(Health / MaxHealth);
+			LaserHUD->UpdateChargeShotText(3);
+		}
 	}
-	
 }
 
 // Called every frame
@@ -128,4 +135,22 @@ void AFPSCharacter::Fire()
 
 	FVector LaunchDirection = MuzzleRotation.Vector();
 	Projectile->FireInDirection(LaunchDirection);
+
+	OnDmgPlayer(10.0f); // for testing only
+}
+
+void AFPSCharacter::OnDmgPlayer(float DamageAmount)
+{
+	if (DamageAmount <= 0.0f) return;
+	if (Health <= 0.0f) return;
+
+	Health -= DamageAmount;
+
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		if (ALaserHUD* LaserHUD = Cast<ALaserHUD>(PC->GetHUD()))
+		{
+			LaserHUD->UpdateHealthBar(Health / MaxHealth);
+		}
+	}
 }
