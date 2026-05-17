@@ -31,6 +31,16 @@ void UHUDUserWidget::UpdateChargeShotText(int ShotCount)
 	ChargeShotText->SetText(FText::FromString(ChargeShotString));
 }
 
+void UHUDUserWidget::UpdateScoringText(int Score)
+{
+	if (!ScoreText)
+	{
+		return;
+	}
+	FString ScoreString = FString::Printf(TEXT("Score: %d"), Score);
+	ScoreText->SetText(FText::FromString(ScoreString));
+}
+
 void UHUDUserWidget::SetCrosshairVisible(bool bVisible)
 {
 	if (!CrosshairImage) return;

@@ -33,4 +33,10 @@ public:
 
 	UFUNCTION()
 	void UpdateChargeShotText(int ShotCount);
+
+	UPROPERTY()
+	int32 Score;
+
+	UFUNCTION()
+	void AddScore(int32 Amount);
 };

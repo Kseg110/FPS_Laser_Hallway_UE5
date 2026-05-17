@@ -30,11 +30,17 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UImage* CrosshairImage;
 
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* ScoreText;
+
 	UFUNCTION()
 	void UpdateHealthBar(float HealthPercent);
 
 	UFUNCTION()
 	void UpdateChargeShotText(int ShotCount);
+
+	UFUNCTION()
+	void UpdateScoringText(int Score);
 
 	UFUNCTION()
 	void SetCrosshairVisible(bool bVisible);

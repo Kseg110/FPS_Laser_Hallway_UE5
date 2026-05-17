@@ -48,3 +48,12 @@ void ALaserHUD::UpdateChargeShotText(int ShotCount)
 	}
 }
 
+void ALaserHUD::AddScore(int32 Amount)
+{
+	Score += Amount;
+	if (HUDWidgetInstance)
+	{
+		HUDWidgetInstance->UpdateScoringText(Score);
+	}
+}
+

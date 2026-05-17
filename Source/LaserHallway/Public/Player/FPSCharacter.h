@@ -49,6 +49,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* FireAction;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* AltFireAction;
+
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* FPSCameraComponent;
 
@@ -69,6 +72,9 @@ public:
 
 	UFUNCTION()
 	void Fire();
+
+	UFUNCTION()
+	void AltFire();
 
 	UFUNCTION()
 	void OnDmgPlayer(float DamageAmount);
