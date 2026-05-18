@@ -9,7 +9,7 @@ void UHUDUserWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	UpdateHealthBar(1.0f);
-	UpdateChargeShotText(3);
+	UpdateChargeShotBar(1.0f);
 }
 
 void UHUDUserWidget::UpdateHealthBar(float HealthPercent)
@@ -21,14 +21,13 @@ void UHUDUserWidget::UpdateHealthBar(float HealthPercent)
 	HealthBar->SetPercent(HealthPercent);
 }
 
-void UHUDUserWidget::UpdateChargeShotText(int ShotCount)
+void UHUDUserWidget::UpdateChargeShotBar(float ChargePercent)
 {
-	if (!ChargeShotText)
+	if (!ChargeShotBar)
 	{
 		return;
 	}
-	FString ChargeShotString = FString::Printf(TEXT("Charge Shots: %d"), ShotCount);
-	ChargeShotText->SetText(FText::FromString(ChargeShotString));
+	ChargeShotBar->SetPercent(ChargePercent);
 }
 
 void UHUDUserWidget::UpdateScoringText(int Score)

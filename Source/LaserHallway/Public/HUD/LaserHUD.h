@@ -32,7 +32,7 @@ public:
 	void UpdateHealthBar(float HealthPercent);
 
 	UFUNCTION()
-	void UpdateChargeShotText(int ShotCount);
+	void UpdateChargeShotBar(float ChargePercent);
 
 	UPROPERTY()
 	int32 Score;

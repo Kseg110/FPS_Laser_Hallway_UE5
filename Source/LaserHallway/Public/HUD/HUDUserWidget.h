@@ -25,7 +25,7 @@ public:
 	UProgressBar* HealthBar;
 
 	UPROPERTY(meta = (BindWidget))
-	UTextBlock* ChargeShotText;
+	UProgressBar* ChargeShotBar;
 
 	UPROPERTY(meta = (BindWidget))
 	UImage* CrosshairImage;
@@ -37,7 +37,7 @@ public:
 	void UpdateHealthBar(float HealthPercent);
 
 	UFUNCTION()
-	void UpdateChargeShotText(int ShotCount);
+	void UpdateChargeShotBar(float ChargePercent);
 
 	UFUNCTION()
 	void UpdateScoringText(int Score);

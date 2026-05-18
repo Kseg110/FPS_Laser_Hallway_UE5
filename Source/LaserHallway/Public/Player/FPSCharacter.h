@@ -79,9 +79,18 @@ public:
 	UFUNCTION()
 	void OnDmgPlayer(float DamageAmount);
 
+	UFUNCTION(BlueprintCallable, Category = "Status")
+	float GetChargePercent() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Status")
+	void RefillCharge();
+
 private:
 	float Health = 100.0f;
 	float MaxHealth = 100.0f;
+
+	UPROPERTY(VisibleAnywhere, Category = "Status")
+	float Charge = 1.0f;
 
 	UPROPERTY(EditAnywhere)
 	FVector MuzzleOffset;

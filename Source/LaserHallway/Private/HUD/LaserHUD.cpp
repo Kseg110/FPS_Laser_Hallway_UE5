@@ -27,7 +27,7 @@ void ALaserHUD::BeginPlay()
 		{
 			HUDWidgetInstance->AddToViewport();
 			HUDWidgetInstance->UpdateHealthBar(1.0f);
-			HUDWidgetInstance->UpdateChargeShotText(3);
+			HUDWidgetInstance->UpdateChargeShotBar(1.0f);
 		}
 	}
 }
@@ -40,11 +40,11 @@ void ALaserHUD::UpdateHealthBar(float HealthPercent)
 	}
 }
 
-void ALaserHUD::UpdateChargeShotText(int ShotCount)
+void ALaserHUD::UpdateChargeShotBar(float ChargePercent)
 {
 	if (HUDWidgetInstance)
 	{
-		HUDWidgetInstance->UpdateChargeShotText(ShotCount);
+		HUDWidgetInstance->UpdateChargeShotBar(ChargePercent);
 	}
 }
 

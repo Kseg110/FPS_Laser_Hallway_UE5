@@ -41,6 +41,8 @@ void AFPSCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Charge = FMath::Clamp(Charge, 0.0f, 1.0f);
+
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
 		if (PlayerMappingContext)
@@ -54,7 +56,7 @@ void AFPSCharacter::BeginPlay()
 		if (ALaserHUD* LaserHUD = Cast<ALaserHUD>(PlayerController->GetHUD()))
 		{
 			LaserHUD->UpdateHealthBar(Health / MaxHealth);
-			LaserHUD->UpdateChargeShotText(3);
+			LaserHUD->UpdateChargeShotBar(Charge);
 		}
 	}
 }
@@ -170,6 +172,18 @@ void AFPSCharacter::AltFire()
 
 	FVector LaunchDirection = MuzzleRotation.Vector();
 	Projectile->FireInDirection(LaunchDirection);
+
+	//Consume charge bar on charge shot
+	Charge = 0.0f;
+
+	//Update HUD
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		if (ALaserHUD* LaserHUD = Cast<ALaserHUD>(PC->GetHUD()))
+		{
+			LaserHUD->UpdateChargeShotBar(Charge);
+		}
+	}
 }
 
 void AFPSCharacter::OnDmgPlayer(float DamageAmount)
@@ -184,6 +198,23 @@ void AFPSCharacter::OnDmgPlayer(float DamageAmount)
 		if (ALaserHUD* LaserHUD = Cast<ALaserHUD>(PC->GetHUD()))
 		{
 			LaserHUD->UpdateHealthBar(Health / MaxHealth);
+		}
+	}
+}
+
+float AFPSCharacter::GetChargePercent() const
+{
+	return FMath::Clamp(Charge, 0.0f, 1.0f);
+}
+
+void AFPSCharacter::RefillCharge()
+{
+	Charge = 1.0f;
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		if (ALaserHUD* LaserHUD = Cast<ALaserHUD>(PC->GetHUD()))
+		{
+			LaserHUD->UpdateChargeShotBar(Charge);
 		}
 	}
 }
