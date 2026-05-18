@@ -28,7 +28,7 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Environment")
 	USphereComponent* CollisionComponent;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Environment")
+	UPROPERTY(EditDefaultsOnly, Category = "Environment")
 	UStaticMeshComponent* MeshComponent;
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
