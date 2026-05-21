@@ -33,6 +33,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
 	//Enhanced Input Assets
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputMappingContext* PlayerMappingContext;
@@ -91,6 +93,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Status")
 	float Charge = 1.0f;
+
+	UPROPERTY(VisibleAnywhere, category = "Status")
+	float bAltFireEnabled = true;
 
 	UPROPERTY(EditAnywhere)
 	FVector MuzzleOffset;

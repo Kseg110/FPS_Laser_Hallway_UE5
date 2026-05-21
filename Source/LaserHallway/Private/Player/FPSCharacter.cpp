@@ -84,6 +84,17 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	}
 }
 
+float AFPSCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	const float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	if (ActualDamage > 0.0f)
+	{
+		OnDmgPlayer(ActualDamage);
+	}
+	return ActualDamage;
+}
+
 void AFPSCharacter::Move(const FInputActionValue& Value)
 {
 	const FVector2D MovementVector = Value.Get<FVector2D>();
@@ -144,6 +155,8 @@ void AFPSCharacter::Fire()
 
 void AFPSCharacter::AltFire()
 {
+	if (Charge <= 0.0f) return;
+
 	if (!ProjectileClass) return;
 
 	// init projectiles relevant locaiton info

@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
 #include "HUD/LaserHUD.h"
+#include "Player/FPSCharacter.h"
 
 // Sets default values
 ACrystalPickup::ACrystalPickup()
@@ -50,12 +51,10 @@ void ACrystalPickup::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Othe
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	if (OtherActor != PlayerPawn) return;
 
-	if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	if (AFPSCharacter* PlayerCharacter = Cast<AFPSCharacter>(OtherActor))
 	{
-		if (ALaserHUD* HUD = Cast<ALaserHUD>(PC->GetHUD()))
-		{
-			HUD->UpdateChargeShotBar(1.0f);
-		}
+		PlayerCharacter->RefillCharge();
+
+		Destroy();
 	}
-	Destroy();
 }
