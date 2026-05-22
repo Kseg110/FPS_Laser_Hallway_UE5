@@ -25,8 +25,8 @@ ALaserObstacle::ALaserObstacle()
 	CollisionComponent->SetCollisionResponseToAllChannels(ECR_Overlap);
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
-	ProjectileMovement->InitialSpeed = 100.0f;
-	ProjectileMovement->MaxSpeed = 100.0f;
+	ProjectileMovement->InitialSpeed = 1000.0f;
+	ProjectileMovement->MaxSpeed = 1000.0f;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->ProjectileGravityScale = 0.0f;
 	ProjectileMovement->Velocity = FVector(0.0f, ProjectileMovement->InitialSpeed, 0.0f);
