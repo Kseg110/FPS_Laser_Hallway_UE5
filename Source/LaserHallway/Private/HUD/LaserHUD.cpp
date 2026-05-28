@@ -5,10 +5,12 @@
 #include "HUD/HUDUserWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "GameFramework/PlayerController.h"
+#include "Game/LaserGameInstance.h"
 
 ALaserHUD::ALaserHUD()
 {
-	HUDWidgetInstance = nullptr;
+	//HUDWidgetInstance = nullptr;
+	Score = 0;
 }
 
 void ALaserHUD::BeginPlay()
@@ -28,6 +30,7 @@ void ALaserHUD::BeginPlay()
 			HUDWidgetInstance->AddToViewport();
 			HUDWidgetInstance->UpdateHealthBar(1.0f);
 			HUDWidgetInstance->UpdateChargeShotBar(1.0f);
+			HUDWidgetInstance->UpdateScoringText(Score);
 		}
 	}
 }
@@ -54,6 +57,14 @@ void ALaserHUD::AddScore(int32 Amount)
 	if (HUDWidgetInstance)
 	{
 		HUDWidgetInstance->UpdateScoringText(Score);
+	}
+
+	if (GetWorld())
+	{
+		if (ULaserGameInstance* GI = Cast<ULaserGameInstance>(GetWorld()->GetGameInstance()))
+		{
+			GI->SetHighScore(Score);
+		}
 	}
 }
 
