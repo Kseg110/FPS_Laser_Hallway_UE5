@@ -43,11 +43,11 @@ void ALaserSpawner::BeginPlay()
 }
 
 // Called every frame
-//void ALaserSpawner::Tick(float DeltaTime)
-//{
-//	Super::Tick(DeltaTime);
-//
-//}
+void ALaserSpawner::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
 
 void ALaserSpawner::SpawnLaser()
 {
