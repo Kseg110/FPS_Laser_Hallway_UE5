@@ -27,7 +27,6 @@ void UMenuWidget::OnStartGameClicked()
 	if (GetWorld())
 	{
 		// switch to gamescene on click
-		//FName LevelName(TEXT("GameMap"));
 		UGameplayStatics::OpenLevel(GetWorld(), TEXT("GameMap"));
 	}
 }
@@ -35,5 +34,17 @@ void UMenuWidget::OnStartGameClicked()
 void UMenuWidget::OnQuitClicked()
 {
 	UKismetSystemLibrary::QuitGame(GetWorld(), nullptr, EQuitPreference::Quit, false);
+}
+
+void UMenuWidget::UpdateHighScoreText(int HighScore)
+{
+}
+
+void UMenuWidget::UpdateRoundScoreText(int RoundScore)
+{
+}
+
+void UMenuWidget::OnClearScoreButtonClicked()
+{
 }
 

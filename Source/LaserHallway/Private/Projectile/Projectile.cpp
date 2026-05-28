@@ -2,6 +2,7 @@
 
 
 #include "Projectile/Projectile.h"
+#include "Environment/LaserObstacle.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -60,6 +61,13 @@ void AProjectile::FireInDirection(const FVector& ShootDirection)
 
 void AProjectile::HitResult(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
+	if (!OtherActor || OtherActor == this) return;
+
+	if (bIsAltProjectile && OtherActor->IsA(ALaserObstacle::StaticClass()))
+	{
+		OtherActor->Destroy();
+	}
+
 	if (OtherActor != this && OtherComponent->IsSimulatingPhysics())
 	{
 		OtherComponent->AddImpulseAtLocation(ProjectileMovementComponent->Velocity * 100.0f, Hit.ImpactPoint);

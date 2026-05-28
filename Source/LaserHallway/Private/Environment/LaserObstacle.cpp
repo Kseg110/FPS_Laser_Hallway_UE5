@@ -6,6 +6,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Environment/LaserObstacle.h"
+#include "Projectile/Projectile.h"
 
 
 // Sets default values
@@ -56,6 +57,14 @@ void ALaserObstacle::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Othe
 	if (!OtherActor || OtherActor == this)
 	{
 		return;
+	}
+
+	if (AProjectile* HitProj = Cast<AProjectile>(OtherActor))
+	{
+		if (!HitProj->bIsAltProjectile)
+		{
+			return;
+		}
 	}
 
 	const float DamageAmount = 10.0f;

@@ -28,10 +28,28 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* QuitButton;
+
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* HighScoreText;
+
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* RoundScoreText;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* ClearScoreButton;
 	
 	UFUNCTION()
 	void OnStartGameClicked();
 
 	UFUNCTION()
 	void OnQuitClicked();
+
+	UFUNCTION()
+	void UpdateHighScoreText(int HighScore);
+
+	UFUNCTION()
+	void UpdateRoundScoreText(int RoundScore);
+
+	UFUNCTION()
+	void OnClearScoreButtonClicked();
 };

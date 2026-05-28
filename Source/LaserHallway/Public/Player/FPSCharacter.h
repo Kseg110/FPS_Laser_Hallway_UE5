@@ -60,6 +60,12 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* FPSMeshComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	int32 MaxJumpCount = 2;
+
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+	TSubclassOf<AProjectile> AltProjectileClass;
+
 	UFUNCTION()
 	void Move(const FInputActionValue& Value);
 

@@ -7,12 +7,18 @@
 #include "Kismet/GameplayStatics.h"
 #include "Player/FPSCharacter.h"
 #include "GameFramework/PlayerController.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 AFPSCharacter::AFPSCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	if (GetCharacterMovement())
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 1200.0f;
+	}
 
 	if (!FPSCameraComponent)
 	{
@@ -40,6 +46,10 @@ AFPSCharacter::AFPSCharacter()
 void AFPSCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	
+	JumpMaxCount = MaxJumpCount;
+	
 
 	Charge = FMath::Clamp(Charge, 0.0f, 1.0f);
 
@@ -112,11 +122,13 @@ void AFPSCharacter::Look(const FInputActionValue& Value)
 void AFPSCharacter::StartJump()
 {
 	bPressedJump = true;
+	Jump();
 }
 
 void AFPSCharacter::EndJump()
 {
 	bPressedJump = false;
+	StopJumping();
 }
 
 void AFPSCharacter::Fire()
@@ -155,9 +167,11 @@ void AFPSCharacter::Fire()
 
 void AFPSCharacter::AltFire()
 {
+	TSubclassOf<AProjectile> SpawnClass = AltProjectileClass ? AltProjectileClass : ProjectileClass;
+
 	if (Charge <= 0.0f) return;
 
-	if (!ProjectileClass) return;
+	if (!SpawnClass) return;
 
 	// init projectiles relevant locaiton info
 	FVector CameraLocation;
@@ -180,11 +194,13 @@ void AFPSCharacter::AltFire()
 	SpawnParams.Instigator = GetInstigator();
 
 	// Instantiate
-	AProjectile* Projectile = World->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, MuzzleRotation, SpawnParams);
-	if (!Projectile) return;
-
-	FVector LaunchDirection = MuzzleRotation.Vector();
-	Projectile->FireInDirection(LaunchDirection);
+	AProjectile* Projectile = World->SpawnActor<AProjectile>(SpawnClass, MuzzleLocation, MuzzleRotation, SpawnParams);
+	if (Projectile)
+	{
+		Projectile->bIsAltProjectile = true;
+		FVector LaunchDirection = MuzzleRotation.Vector();
+		Projectile->FireInDirection(LaunchDirection);
+	}
 
 	//Consume charge bar on charge shot
 	Charge = 0.0f;
@@ -202,7 +218,10 @@ void AFPSCharacter::AltFire()
 void AFPSCharacter::OnDmgPlayer(float DamageAmount)
 {
 	if (DamageAmount <= 0.0f) return;
-	if (Health <= 0.0f) return;
+	if (Health <= 0.0f)
+	{
+		UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainMenu"));
+	}
 
 	Health -= DamageAmount;
 

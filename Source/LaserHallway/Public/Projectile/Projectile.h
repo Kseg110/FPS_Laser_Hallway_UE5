@@ -40,6 +40,9 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Movement")
 	UProjectileMovementComponent* ProjectileMovementComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	bool bIsAltProjectile = false;
+
 	UFUNCTION()
 	void FireInDirection(const FVector& ShootDirection);
 
