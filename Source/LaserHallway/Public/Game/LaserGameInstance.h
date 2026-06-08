@@ -22,6 +22,9 @@ public:
 	int32 GetHighScore() const { return HighScore; }
 
 	UFUNCTION(BlueprintCallable)
+	int32 GetLastRoundScore() const { return LastRoundScore; }
+
+	UFUNCTION(BlueprintCallable)
 	void SetHighScore(int32 NewHighScore);
 
 	UFUNCTION(BlueprintCallable)
@@ -32,6 +35,7 @@ private:
 	void Save();
 
 	int32 HighScore = 0;
+	int32 LastRoundScore = 0;
 	FString SlotName = TEXT("HighScoreSlot");
 	uint32 UserIndex = 0;
 	

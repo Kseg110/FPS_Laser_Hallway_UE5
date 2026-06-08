@@ -4,6 +4,7 @@
 #include "Game/LaserGameInstance.h"
 #include "Game/HighScoreSaveGame.h"
 #include "Kismet/GameplayStatics.h"
+#include "HUD/LaserHUD.h"
 
 void ULaserGameInstance::Init()
 {
@@ -41,6 +42,7 @@ void ULaserGameInstance::Save()
 
 void ULaserGameInstance::SetHighScore(int32 NewHighScore)
 {
+	LastRoundScore = NewHighScore;
 	if (NewHighScore > HighScore)
 	{
 		HighScore = NewHighScore;

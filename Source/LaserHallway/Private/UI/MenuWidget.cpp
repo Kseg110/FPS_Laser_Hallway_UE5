@@ -17,6 +17,7 @@ void UMenuWidget::NativeConstruct()
 		if (ULaserGameInstance* GI = Cast<ULaserGameInstance>(GetWorld()->GetGameInstance()))
 		{
 			UpdateHighScoreText(GI->GetHighScore());
+			UpdateRoundScoreText(GI->GetLastRoundScore());
 		}
 	}
 }

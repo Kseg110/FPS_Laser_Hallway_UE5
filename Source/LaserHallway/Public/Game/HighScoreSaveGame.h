@@ -17,5 +17,5 @@ class LASERHALLWAY_API UHighScoreSaveGame : public USaveGame
 public:
 	UPROPERTY(VisibleAnywhere)
 	int32 HighScore = 0;
-	
+
 };
