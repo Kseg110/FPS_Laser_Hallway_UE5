@@ -8,6 +8,7 @@
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
 #include "Projectile/Projectile.h"
+#include "Player/HealthComponent.h"
 #include "FPSCharacter.generated.h"
 
 class UInputMappingContext;
@@ -60,6 +61,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* FPSMeshComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UHealthComponent* HealthComponent;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	int32 MaxJumpCount = 2;
 
@@ -85,7 +89,13 @@ public:
 	void AltFire();
 
 	UFUNCTION()
-	void OnDmgPlayer(float DamageAmount);
+	void OnHealthChanged(float CurrentHealth, float DamageAmount);
+
+	UFUNCTION()
+	void OnDeath();
+
+	/*UFUNCTION()
+	void OnDmgPlayer(float DamageAmount);*/
 
 	UFUNCTION(BlueprintCallable, Category = "Status")
 	float GetChargePercent() const;
@@ -94,8 +104,8 @@ public:
 	void RefillCharge();
 
 private:
-	float Health = 100.0f;
-	float MaxHealth = 100.0f;
+	/*float Health = 100.0f;
+	float MaxHealth = 100.0f;*/
 
 	UPROPERTY(VisibleAnywhere, Category = "Status")
 	float Charge = 1.0f;

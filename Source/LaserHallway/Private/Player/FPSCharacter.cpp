@@ -36,6 +36,8 @@ AFPSCharacter::AFPSCharacter()
 		FPSMeshComponent->CastShadow = false;
 	}
 
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
+
 	GetMesh()->SetOwnerNoSee(true);
 
 	UE_LOG(LogTemp, Warning, TEXT("FPSCharacter Constructor call"));
@@ -50,8 +52,14 @@ void AFPSCharacter::BeginPlay()
 	
 	JumpMaxCount = MaxJumpCount;
 	
-
 	Charge = FMath::Clamp(Charge, 0.0f, 1.0f);
+
+	// Bind Health component delegates
+	if (HealthComponent)
+	{
+		HealthComponent->OnHealthChanged.AddDynamic(this, &AFPSCharacter::OnHealthChanged);
+		HealthComponent->OnDeath.AddDynamic(this, &AFPSCharacter::OnDeath);
+	}
 
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
@@ -65,7 +73,10 @@ void AFPSCharacter::BeginPlay()
 		}
 		if (ALaserHUD* LaserHUD = Cast<ALaserHUD>(PlayerController->GetHUD()))
 		{
-			LaserHUD->UpdateHealthBar(Health / MaxHealth);
+			if (HealthComponent)
+			{
+				LaserHUD->UpdateHealthBar(HealthComponent->GetHealthPercent());
+			}
 			LaserHUD->UpdateChargeShotBar(Charge);
 		}
 	}
@@ -98,9 +109,9 @@ float AFPSCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEv
 {
 	const float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
-	if (ActualDamage > 0.0f)
+	if (ActualDamage > 0.0f && HealthComponent)
 	{
-		OnDmgPlayer(ActualDamage);
+		HealthComponent->TakeDamage(ActualDamage);
 	}
 	return ActualDamage;
 }
@@ -215,23 +226,23 @@ void AFPSCharacter::AltFire()
 	}
 }
 
-void AFPSCharacter::OnDmgPlayer(float DamageAmount)
+void AFPSCharacter::OnHealthChanged(float CurrentHealth, float DamageAmount)
 {
-	if (DamageAmount <= 0.0f) return;
-	if (Health <= 0.0f)
-	{
-		UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainMenu"));
-	}
-
-	Health -= DamageAmount;
-
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
 		if (ALaserHUD* LaserHUD = Cast<ALaserHUD>(PC->GetHUD()))
 		{
-			LaserHUD->UpdateHealthBar(Health / MaxHealth);
+			if (HealthComponent)
+			{
+				LaserHUD->UpdateHealthBar(HealthComponent->GetHealthPercent());
+			}
 		}
 	}
+}
+
+void AFPSCharacter::OnDeath()
+{
+	UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainMenu"));
 }
 
 float AFPSCharacter::GetChargePercent() const
