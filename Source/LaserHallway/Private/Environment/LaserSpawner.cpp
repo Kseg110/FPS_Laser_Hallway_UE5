@@ -103,16 +103,27 @@ void ALaserSpawner::SpawnPattern(const FLaserPatternConfig& Pattern)
 	TArray<FVector> SpawnPositions = GeneratePatternPositions(Pattern);
 
 	// Determine rotation based on orientation
-	//FRotator BaseRotation = GetActorRotation();
-	FRotator BaseRotation = FRotator::ZeroRotator;
+	FRotator BaseRotation = GetActorRotation();
+	FQuat RotationQuat = FQuat::Identity;
+
 	if (Pattern.Orientation == ELaserOrientation::Vertical)
 	{
 		BaseRotation.Roll += 90.0f; // rotates laser to be Vertical
+		RotationQuat = FQuat(FVector::ForwardVector, FMath::DegreesToRadians(90.0f));
 	}
 
-	for (const FVector& LocalPos : SpawnPositions)
+	FVector SpawnCenter = SpawnVolume->GetComponentLocation();
+
+	for (int32 i = 0; i < SpawnPositions.Num(); ++i)
 	{
-		FVector WorldPos = GetActorTransform().TransformPosition(LocalPos);
+		FVector& LocalPos = SpawnPositions[i];
+
+		if (Pattern.Orientation == ELaserOrientation::Vertical)
+		{
+			LocalPos = RotationQuat.RotateVector(LocalPos);
+		}
+
+		FVector WorldPos = SpawnCenter + LocalPos;
 		SpawnSingleLaser(WorldPos, BaseRotation);
 	}
 }
@@ -218,6 +229,8 @@ void ALaserSpawner::SpawnSingleLaser(const FVector& Location, const FRotator& Ro
 	FActorSpawnParameters Params;
 	Params.Owner = this;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	UE_LOG(LogTemp, Warning, TEXT("ALaserSpawner: Attempting to spawn laser with Rotatin: %s"), *Rotation.ToString());
 
 	ALaserObstacle* Spawned = GetWorld()->SpawnActor<ALaserObstacle>(LaserObstacleClass, Location, Rotation, Params);
 	if (!Spawned)

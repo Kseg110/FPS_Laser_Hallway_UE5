@@ -26,11 +26,12 @@ ALaserObstacle::ALaserObstacle()
 	CollisionComponent->SetCollisionResponseToAllChannels(ECR_Overlap);
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
-	ProjectileMovement->InitialSpeed = 1000.0f;
-	ProjectileMovement->MaxSpeed = 1000.0f;
-	ProjectileMovement->bRotationFollowsVelocity = true;
+	ProjectileMovement->InitialSpeed = 1200.0f;
+	ProjectileMovement->MaxSpeed = 2000.0f;
+	ProjectileMovement->bRotationFollowsVelocity = false;
+	ProjectileMovement->bInitialVelocityInLocalSpace = false;
 	ProjectileMovement->ProjectileGravityScale = 0.0f;
-	ProjectileMovement->Velocity = FVector(0.0f, ProjectileMovement->InitialSpeed, 0.0f);
+	//ProjectileMovement->Velocity = FVector(0.0f, 1200.0f, 0.0f);
 }
 
 // Called when the game starts or when spawned
@@ -41,6 +42,17 @@ void ALaserObstacle::BeginPlay()
 	if (CollisionComponent)
 	{
 		CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ALaserObstacle::OnOverlap);
+	}
+
+	if (ProjectileMovement)
+	{
+		FVector ForwardDirection = GetActorForwardVector();
+		ProjectileMovement->Velocity = ForwardDirection * ProjectileMovement->InitialSpeed;
+
+		UE_LOG(LogTemp, Warning, TEXT("LaserObstacle: Rotation=%s, Forward %s, Velocity=%s"),
+			*GetActorRotation().ToString(),
+			*ForwardDirection.ToString(),
+			*ProjectileMovement->Velocity.ToString());
 	}
 	
 }
@@ -57,6 +69,14 @@ void ALaserObstacle::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Othe
 	if (!OtherActor || OtherActor == this)
 	{
 		return;
+	}
+
+	if (AProjectile* HitProj = Cast<AProjectile>(OtherActor))
+	{
+		if (!HitProj->bIsAltProjectile)
+		{
+			return;
+		}
 	}
 
 	if (AProjectile* HitProj = Cast<AProjectile>(OtherActor))
