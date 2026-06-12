@@ -37,7 +37,7 @@ struct FLaserPatternConfig
 	//HorizontalRow: for the number of laser across (X-axis)
 	//VerticalColumn: for number of lasers vertically (Y-axis)
 	//Grid count in  primary axis
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pattern", meta = (ClampMin = "1", ClampMax = "20"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pattern", meta = (ClampMin = "1", ClampMax = "25"))
 	int32 Count = 1;
 	
 	// GRID: count in secondary axis

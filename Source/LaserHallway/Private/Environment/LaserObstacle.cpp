@@ -73,8 +73,9 @@ void ALaserObstacle::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Othe
 
 	if (AProjectile* HitProj = Cast<AProjectile>(OtherActor))
 	{
-		if (!HitProj->bIsAltProjectile)
+		if (HitProj->bIsAltProjectile)
 		{
+			Destroy();
 			return;
 		}
 	}
@@ -89,6 +90,4 @@ void ALaserObstacle::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Othe
 
 	const float DamageAmount = 10.0f;
 	UGameplayStatics::ApplyDamage(OtherActor, DamageAmount, GetInstigatorController(), this, nullptr);
-
-	Destroy(); // delete later if laser is desired to pass through player and not destroy.
 }
